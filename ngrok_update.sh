@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the path to the ngrok configuration file
-NGROK_CONFIG_FILE="$HOME/Library/Application Support/ngrok/ngrok.yml"
+NGROK_CONFIG_FILE="$HOME/.config/ngrok/ngrok.yml"
 ngrok config add-authtoken 2jbLcOBiy3lcZwmxDS4lAcRsJDy_5JyfWPnLHEy4uWowuyF54
 # Prompt the user to enter the edge label value and port
 read -p "Enter the edge label value (e.g., edghts_2nNWk2oF0axtVBmu5QPmtajeqYB): " EDGE_LABEL
