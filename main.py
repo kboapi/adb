@@ -149,8 +149,10 @@ def get_devices_all():
 
 @app.route("/unlock",methods=["GET","POST"])
 def unlock():
-    data = request.args
-    device = data["device"]
+    device = request.args.get("device")
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
     adb = uiautomator2.connect(device)
     adb.screen_on()
     adb.swipe_ext(Direction.FORWARD)
@@ -158,24 +160,30 @@ def unlock():
 
 @app.route("/lock",methods=["GET","POST"])
 def lock():
-    data = request.args
-    device = data["device"]
+    device = request.args.get("device")
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
     adb = uiautomator2.connect(device)
     adb.screen_off()
     return  {"status":True,"msg":'ล็อก สำเร็จ'}
 
 @app.route("/clearall",methods=["GET","POST"])
 def clearall():
-    data = request.args
-    device = data["device"]
+    device = request.args.get("device")
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
     adb = uiautomator2.connect(device)
     close_all_apps(adb)
     return  {"status":True,"msg":'clear สำเร็จ'}
 
 @app.route("/clear",methods=["GET","POST"])
 def clearone():
-    data = request.args
-    device = data["device"]
+    device = request.args.get("device")
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
     adb = uiautomator2.connect(device)
     close_unwanted_apps(adb)
     return  {"status":True,"msg":'clear สำเร็จ'}
@@ -183,8 +191,10 @@ def clearone():
 
 @app.route("/info",methods=["GET","POST"])
 def info():
-    data = request.args
-    device = data["device"]
+    device = request.args.get("device")
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
     adb = uiautomator2.connect(device)
     return  {"status":True,"msg":adb.info}
 
@@ -193,8 +203,10 @@ def verifyphone():
     # com.kasikorn.retail.mbanking.wap:id/complete_back_button
     start_time = time.time()
     time_out = 60
-    data = request.args
-    device = data["device"]
+    device = request.args.get("device")
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
     package = "com.kasikorn.retail.mbanking.wap"
     adb = uiautomator2.connect(device)
     adb.app_start(package)
@@ -227,7 +239,10 @@ def index():
         start_time = time.time()
         time_out = 60
         data = request.args
-        device = data["device"]
+        device = request.args.get("device")
+        if not device:
+            devices = get_devices_all()
+            device = devices[0]
         token = data["token"]
         link = f"https://kpaymentgateway-services.kasikornbank.com/KPGW-Redirect-Webapi/Appswitch/{token}"
         pin = "112233"
