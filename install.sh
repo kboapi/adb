@@ -11,6 +11,7 @@ pip install --pre uiautomator2
 pip install pure-python-adb
 
 pip install flask 
+pip install xmltodict
 
 pkg update -y
 pkg install git

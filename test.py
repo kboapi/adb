@@ -3,7 +3,7 @@ import subprocess
 import time
 
 # Connect to the device
-d = u2.connect()
+d = u2.connect('1.tcp.ngrok.io:29578')
 
 # Ensure the screen is on
 d.screen_on()
