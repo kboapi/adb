@@ -148,13 +148,22 @@ def get_devices_all():
     return  data_adb
 
 
-@app.route("/clear",methods=["GET","POST"])
-def clear():
+@app.route("/clearall",methods=["GET","POST"])
+def clearall():
     data = request.args
     device = data["device"]
     adb = uiautomator2.connect(device)
     close_all_apps(adb)
     return  {"status":True,"msg":'clear สำเร็จ'}
+
+@app.route("/clear",methods=["GET","POST"])
+def clearone():
+    data = request.args
+    device = data["device"]
+    adb = uiautomator2.connect(device)
+    close_unwanted_apps(adb)
+    return  {"status":True,"msg":'clear สำเร็จ'}
+
 
 @app.route("/info",methods=["GET","POST"])
 def info():
