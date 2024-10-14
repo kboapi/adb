@@ -156,6 +156,14 @@ def unlock():
     adb.swipe_ext(Direction.FORWARD)
     return  {"status":True,"msg":'ปลดล็อก สำเร็จ'}
 
+@app.route("/lock",methods=["GET","POST"])
+def lock():
+    data = request.args
+    device = data["device"]
+    adb = uiautomator2.connect(device)
+    adb.screen_off()
+    return  {"status":True,"msg":'ล็อก สำเร็จ'}
+
 @app.route("/clearall",methods=["GET","POST"])
 def clearall():
     data = request.args
