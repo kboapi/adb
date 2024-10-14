@@ -9,7 +9,7 @@ pip install lxml
 pip install --pre uiautomator2
 
 pip install pure-python-adb
-
+pkg install android-tools
 pip install flask 
 pip install xmltodict
 
