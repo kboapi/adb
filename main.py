@@ -147,6 +147,14 @@ def get_devices_all():
     data_adb = main_adb.list_adb()
     return  data_adb
 
+@app.route("/unlock",methods=["GET","POST"])
+def unlock():
+    data = request.args
+    device = data["device"]
+    adb = uiautomator2.connect(device)
+    adb.screen_on()
+    adb.swipe_ext(Direction.FORWARD)
+    return  {"status":True,"msg":'ปลดล็อก สำเร็จ'}
 
 @app.route("/clearall",methods=["GET","POST"])
 def clearall():
