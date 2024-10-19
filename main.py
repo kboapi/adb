@@ -34,7 +34,7 @@ def close_unwanted_apps(d,excluded_apps=None):
                           If None, defaults to ['com.termux'].
     """
     if excluded_apps is None:
-        excluded_apps = ['com.termux']  # Default excluded apps
+        excluded_apps = ['com.termux','com.gawk.smsforwarder']  # Default excluded apps
 
     # Connect to the device (replace 'your_device_ip' with your device's IP address if necessary)
 
