@@ -29,8 +29,8 @@ def run_adb_command(cmd):
 def close_unwanted_apps(d,excluded_apps=None):
     d.press('home')
     d.app_start('com.termux')
-    d.app_clear('com.kasikorn.retail.mbanking.wap')
-    d.app_clear('com.android.chrome')
+    d.app_stop('com.kasikorn.retail.mbanking.wap')
+    d.app_stop('com.android.chrome')
     # d.app_clear('com.gawk.smsforwarder')
     d.press('home')
 
