@@ -31,7 +31,7 @@ def close_unwanted_apps(d,excluded_apps=None):
     d.app_start('com.termux')
     d.app_clear('com.kasikorn.retail.mbanking.wap')
     d.app_clear('com.android.chrome')
-    d.app_clear('com.gawk.smsforwarder')
+    # d.app_clear('com.gawk.smsforwarder')
     d.press('home')
 
 
