@@ -27,58 +27,11 @@ def run_adb_command(cmd):
     print(result.stdout)
     print(result.stderr)
 def close_unwanted_apps(d,excluded_apps=None):
-    """
-    Closes all apps in the recent apps screen except for those in the excluded_apps list.
-    
-    :param excluded_apps: A list of apps (package names) to exclude from being closed.
-                          If None, defaults to ['com.termux'].
-    """
-    if excluded_apps is None:
-        excluded_apps = ['com.termux','com.gawk.smsforwarder']  # Default excluded apps
-
-    # Connect to the device (replace 'your_device_ip' with your device's IP address if necessary)
-
-
-    # Go to the home screen
     d.press('home')
     d.app_start('com.termux')
-
-    # Press the "Recent Apps" button to show all running apps
-    d.press('recent')
-
-    # Give some time for the recent apps to load
-    time.sleep(1)
-
-    # Iterate over all apps in the recent apps screen
-    apps = d(resourceId="com.android.systemui:id/task_view").child(className="android.widget.FrameLayout")
-
-    # Loop through the running apps
-    for app in apps:
-        app_package = app.info.get('contentDescription', '')  # Get the package name or description of the app
-
-        print(app.info)
-        # Close the app if it's not in the excluded list
-        if not any(excluded in app_package for excluded in excluded_apps):
-            # Try to find the close or dismiss button and click it
-            close_button = app.child_by_text("Close", allow_scroll_search=True)
-            if close_button.exists:
-                close_button.click()  # Click on the close button
-                print(f"Closed app: {app_package}")
-            else:
-                print(f"Could not find close button for: {app_package}")
-        else:
-            print(f"Excluded app: {app_package} - not closed")
-
-    # Interact with the "Clear Memory" button (if necessary)
-    clear_memory_button = d(resourceId="com.miui.home:id/clearAnimView")
-
-    if clear_memory_button.exists:
-        clear_memory_button.click()
-        print("Clear Memory button clicked.")
-    else:
-        print("Clear Memory button not found.")
-
-    # Return to the home screen
+    d.app_clear('com.kasikorn.retail.mbanking.wap')
+    d.app_clear('com.android.chrome')
+    d.app_clear('com.gawk.smsforwarder')
     d.press('home')
 
 
