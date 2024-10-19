@@ -56,7 +56,7 @@ def close_unwanted_apps(d,excluded_apps=None):
     for app in apps:
         app_package = app.info.get('contentDescription', '')  # Get the package name or description of the app
 
-        print(app)
+        print(app.info)
         # Close the app if it's not in the excluded list
         if not any(excluded in app_package for excluded in excluded_apps):
             # Try to find the close or dismiss button and click it
