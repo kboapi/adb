@@ -264,7 +264,7 @@ def index():
                 pass
             try:
                 adb(text="ดำเนินการเสร็จสิ้น").get_text(timeout=0.1)
-                time.sleep(3)
+                time.sleep(1)
                 adb.app_stop(package)
                 return {"status":True,"msg":data_json}
             except:
