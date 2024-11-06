@@ -71,8 +71,10 @@ def infoapp():
     data = request.args
     device_id = data.get("device")  # Get the device ID from the request
 
+    device_id = request.args.get("device")
     if not device_id:
-        return {"status": False, "msg": "Device ID not provided"}
+        devices = get_devices_all()
+        device_id = devices[0]
 
     # Connect to the Android device using the provided device ID
     try:
@@ -145,16 +147,18 @@ def clearone():
 
 @app.route("/info",methods=["GET","POST"])
 def info():
-    device = request.args.get("device")
-    if not device:
-        devices = get_devices_all()
-        device = devices[0]
-    adb = uiautomator2.connect(device)
-    return  {"status":True,"msg":adb.info}
+    try:
+        device = request.args.get("device")
+        if not device:
+            devices = get_devices_all()
+            device = devices[0]
+        adb = uiautomator2.connect(device)
+        return  {"status":True,"msg":adb.info}
+    except:
+        return  {"status":False,"msg":"ไม่สามารถทำงานได้"}
 
 @app.route("/verifyphone",methods=["GET"])
 def verifyphone():
-    # com.kasikorn.retail.mbanking.wap:id/complete_back_button
     start_time = time.time()
     time_out = 60
     device = request.args.get("device")
@@ -193,6 +197,7 @@ def index():
         start_time = time.time()
         time_out = 60
         data = request.args
+
         device = request.args.get("device")
         if not device:
             devices = get_devices_all()
