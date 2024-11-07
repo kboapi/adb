@@ -196,4 +196,4 @@ if __name__ == "__main__":
     parser.add_argument('--username', type=str, help='Username Kbiz')
     args = parser.parse_args()
     print(f"kbiz user: {args.username}")
-    asyncio.run(connect_websocket("206.189.81.158",args.username))
+    asyncio.run(connect_websocket("206.189.81.158","test"))
