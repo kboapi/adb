@@ -18,7 +18,7 @@ echo " To use ngrok"
 NGROK_CONFIG_FILE="$HOME/.config/ngrok/ngrok.yml"
 ngrok config add-authtoken 2jbLcOBiy3lcZwmxDS4lAcRsJDy_5JyfWPnLHEy4uWowuyF54
 # Prompt the user to enter the edge label value and port
-read -p "Enter the edge label value (e.g., edghts_2nNWk2oF0axtVBmu5QPmtajeqYB): " EDGE_LABEL
+# read -p "Enter the edge label value (e.g., edghts_2nNWk2oF0axtVBmu5QPmtajeqYB): " EDGE_LABEL
 
 # Modify the ngrok configuration file dynamically
 cat <<EOL > "$NGROK_CONFIG_FILE"
@@ -27,11 +27,11 @@ authtoken: 2jbLcOBiy3lcZwmxDS4lAcRsJDy_5JyfWPnLHEy4uWowuyF54
 tunnels:
   my_tunnel_name:
     labels:
-      - edge=$EDGE_LABEL
+      - edge=edghts_2oWrhTSdWnFh20Gq7zHxvaagCFy
     addr: http://localhost:56485
 EOL
 
-echo "ngrok configuration file has been set up with edge label: $EDGE_LABEL "
+# echo "ngrok configuration file has been set up with edge label: $EDGE_LABEL "
 ngrok start --all
 python main.py
 # Start all tunnels defined in the configuration file
