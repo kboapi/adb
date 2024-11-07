@@ -184,8 +184,8 @@ async def connect_websocket(ip,name_device):
                         await websocket.send(json.dumps(response))
                     except websockets.exceptions.ConnectionClosed:
                         print("Connection closed, reconnecting...")
-                        pass
-                        # break
+                        # pass
+                        break
         except Exception as e:
             print(f"Connection error: {e}. Retrying in 2 seconds...")
             await asyncio.sleep(2)  # Reconnect delay
