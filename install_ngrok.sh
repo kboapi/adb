@@ -32,8 +32,10 @@ tunnels:
 EOL
 
 # echo "ngrok configuration file has been set up with edge label: $EDGE_LABEL "
-ngrok start --all
-python main.py
+
+bash ngrok start --all
+
+bash python main.py
 # Start all tunnels defined in the configuration file
 
 

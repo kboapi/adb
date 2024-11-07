@@ -14,4 +14,4 @@ yes |pip install xmltodict
 pkg update -y
 
 
-# bash install_ngrok.sh -y
+bash install_ngrok.sh -y
