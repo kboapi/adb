@@ -188,7 +188,8 @@ async def connect_websocket(ip,name_device):
                         break
         except Exception as e:
             print(f"Connection error: {e}. Retrying in 2 seconds...")
-            await asyncio.sleep(2)  # Reconnect delay
+            # await asyncio.sleep(2)  # Reconnect delay
+
 
 # Main block to run the WebSocket client
 if __name__ == "__main__":
