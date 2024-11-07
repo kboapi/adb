@@ -172,6 +172,13 @@ async def connect_websocket(ip,name_device):
                         elif command_data.get("action") == "lock":
                             adb.screen_off()
                             response = {"status": True, "msg": "ล็อก สำเร็จ"}
+                        elif command_data.get("action") == "check_device":
+                            main_adb = LibAdb()
+                            data_adb = main_adb.list_adb()
+                            if data_adb[0] is not None:
+                                response = {"status": True, "msg": f"พบอุปกรณ์: {data_adb[0]}"}
+                            else:
+                                response = {"status": False, "msg": f"ไม่พบอุปกรณ์ที่เชื่อมต่อ"}
                         else:
                             response = {"status": False, "msg": f"action not allow"}
                         await websocket.send(json.dumps(response))
