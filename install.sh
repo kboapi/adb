@@ -13,5 +13,5 @@ yes |pip install flask
 yes |pip install xmltodict 
 pkg update -y
 
-
+cd ngrok
 bash install_ngrok.sh -y
