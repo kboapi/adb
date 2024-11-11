@@ -1,5 +1,4 @@
 #!/bin/bash
-cd ngrok
 rm $PREFIX/bin/ngrok
 rm -rf $PREFIX/share/ngrok
 mkdir -p $PREFIX/share/ngrok
