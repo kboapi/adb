@@ -6,7 +6,7 @@ app = Flask(__name__)
 @app.route('/list-sessions', methods=['GET'])
 def list_sessions():
     try:
-        uiautomator2
+        # uiautomator2
         # รันคำสั่ง `tmux list-sessions` เพื่อดึง Session ทั้งหมด
         result = subprocess.run(['tmux', 'list-sessions'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         

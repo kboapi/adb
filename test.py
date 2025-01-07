@@ -1,161 +1,233 @@
-# import uiautomator2 as u2
-# import subprocess
-# import time
-
-# Connect to the device
-# d = u2.connect('ZPMFORA6SWWWGY6T')
-
-# d.debug = True
-# d.info
-# # print(d.app_info("com.android.chrome"))
-# print(d.device_info)
-
-
-# d.app_stop_all(excludes=['com.facebook.katana'])
-# d.app_clear('com.facebook.katana')
-# d.app_clear(excludes=['com.facebook.katana'])
-# Ensure the screen is on
-# d.screen_on()
-
-# # Use `adb shell` to perform additional tasks
-# def run_adb_command(cmd):
-#     """Run an ADB shell command and print the output."""
-#     result = subprocess.run(f"adb shell {cmd}", shell=True, capture_output=True, text=True)
-#     print(result.stdout)
-#     print(result.stderr)
-
-# # Example ADB commands
-# run_adb_command("input keyevent KEYCODE_WAKEUP")  # Turn on the screen
-# run_adb_command("input swipe 300 1000 300 500")  # Swipe up (for swipe unlock)
-
-
-# def close_unwanted_apps(d,excluded_apps=None):
-#     d.press('home')
-#     d.app_start('com.termux')
-#     d.app_clear('com.kasikorn.retail.mbanking.wap')
-#     d.app_clear('com.android.chrome')
-#     # d.app_clear('com.gawk.smsforwarder')
-#     d.press('home')
-
-
-# close_unwanted_apps(d)
-
 import uiautomator2 as u2
-import time
 import subprocess
-# เชื่อมต่อกับอุปกรณ์ Android
-from threading import Thread
-stop_thread = False
-
-# ฟังก์ชันสำหรับคลิกปุ่ม "อนุญาต"
-def click_allow():
-    global stop_thread
-    while not stop_thread:
-        time.sleep(2)  # รอให้หน้าจอพร้อม
-        d.click(115, 1312)  # คลิกที่พิกัดแรก
-        print("เริ่ม click")
-        d.click(195, 1402)  # คลิกที่พิกัดที่สอง
-        break  # หยุดหลังจากคลิกครั้งเดียว
+import time
+import xmltodict
+#Connect to the device
 d = u2.connect()
-d.set_orientation("n") 
-# ข้อความที่คุณต้องการวาง
-command_to_paste = "pkg update -y && pkg upgrade -y && pkg install git -y && pkg install python -y"
-# เปิดแอป Termux
-d.app_start("com.termux")
-time.sleep(3)  # รอให้แอป Termux เปิดขึ้น
-try:
-    footer_bank_textview = d(text="อนุญาต").get_text(timeout=0.1)
-    print(footer_bank_textview)
-    d(text="อนุญาต").click()
-except:
-    pass
 
 
-command_to_paste = (
-    "pkg upgrade -y && "
-    "pkg install git -y && "
-    "pkg install python -y && "
-    "yes | pip install cython && "
-    "pkg install libxml2 libxslt -y && "
-    "pkg install -y python ndk-sysroot clang make libjpeg-turbo -y && "
-    "pkg install clang -y && "
-    "yes | pip install lxml && "
-    "yes | pip install --pre uiautomator2 && "
-    "yes | pip install pure-python-adb && "
-    "pkg install android-tools -y && "
-    "yes | pip install flask && "
-    "yes | pip install xmltodict && "
-    "pkg update -y"
-)
-
-# ใช้ ADB เพื่อคัดลอกข้อความไปยังคลิปบอร์ด
-subprocess.run(f'adb shell "echo \'{command_to_paste}\' | tr -d \'\\n\' | am broadcast -a clipper.set -e text \\"{command_to_paste}\\""',
-               shell=True)
-print("ข้อความถูกคัดลอกไปยังคลิปบอร์ดแล้วผ่าน ADB")
-
-# วางข้อความใน Termux และกด Enter เพื่อรันคำสั่ง
-
-thread = Thread(target=click_allow)
-thread.start()
-d.send_keys(command_to_paste)
-d.send_keys("\n")  # กด Enter เพื่อรันคำสั่ง
-print("คำสั่งถูกวางและรันใน Termux แล้ว")
-stop_thread = True  # ตั้งค่าสถานะเพื่อหยุด Thread
-thread.join()  
-
-# # เชื่อมต่อกับอุปกรณ์ Android
-# adb = u2.connect()
-
-# # เปิดแอป Termux
-# adb.app_start("com.termux")
-# time.sleep(2)  # รอให้แอป Termux เปิดขึ้น
-
-# # รายการคำสั่งที่ต้องการรันใน Termux
-# commands = [
-#     "pkg update -y",
-#     "pkg upgrade -y",
-#     "pkg install git -y",
-#     "pkg install python -y",
-#     "pkg install clang -y",
-#     "pkg install make -y",
-#     "pkg install libjpeg-turbo -y",
-#     "pkg install libxml2 libxslt -y",
-#     "pkg install ndk-sysroot -y",
-#     "pkg install android-tools -y",
-#     "yes | pip install cython",
-#     "yes | pip install lxml",
-#     "yes | pip install --pre uiautomator2",
-#     "yes | pip install pure-python-adb",
-#     "yes | pip install flask",
-#     "yes | pip install xmltodict"
-# ]
-# stop_thread = False
-
-# # ฟังก์ชันสำหรับคลิกปุ่ม "อนุญาต"
-# def click_allow():
-#     global stop_thread
-#     while not stop_thread:
-#         time.sleep(2)  # รอให้หน้าจอพร้อม
-#         adb.click(115, 1312)  # คลิกที่พิกัดแรก
-#         print("เริ่ม click")
-#         adb.click(195, 1402)  # คลิกที่พิกัดที่สอง
-#         break  # หยุดหลังจากคลิกครั้งเดียว
-
-# # วนลูปเพื่อส่งแต่ละคำสั่งไปยัง Termux
-# for command in commands:
-#     for char in command:  # ส่งทีละตัวอักษร
+# d.app_start("com.kasikornbank.kbiz")
+# while True:
+    
+#     if d.xpath('//*[@content-desc="ใช่"]').exists:
+#         d.xpath('//*[@content-desc="ใช่"]').click()
         
-        # try:
-        #     footer_bank_textview = adb(text="อนุญาต").get_text(timeout=0.1)
-        #     print(footer_bank_textview)
-        #     adb(text="อนุญาต").click()
-        # except:
-        #     pass
+#     elif d.xpath('//*[@content-desc="เข้าสู่ระบบ"]').exists:
+#         d.xpath('//*[@content-desc="เข้าสู่ระบบ"]').click()
+        
+#     elif d.xpath('//*[@content-desc="ใส่รหัส PIN"]').exists:
+#         print("ใส่รหัส PIN")
+#         break
 
-        # thread = Thread(target=click_allow)
-#         thread.start()
-#         adb.send_keys(char)
-#         stop_thread = True  # ตั้งค่าสถานะเพื่อหยุด Thread
-#         thread.join()  
+# while True:
+#     if d.xpath('//*[@content-desc="1"]').exists:
+#         for digit in "080564":
+#             d.xpath(f'//*[@content-desc="{digit}"]').click()
+#             time.sleep(0.2)
 
-#     adb.send_keys("\n")  # กด Enter เพื่อรันคำสั่ง
+#         break
+
+
+
+# while True:
+#     try:
+#         d.xpath('//*[starts-with(@content-desc,"ธุรกรรม")]').click()
+#         time.sleep(0.1)
+#     except:
+#         pass
+
+#     try:
+#         d.xpath('//*[@content-desc="โอนเงิน"]').click()
+#         print("โอนเงิน")
+#         break
+#     except:
+#         pass
+
+
+
+# while True:
+#     try:
+#         d.xpath('//*[@content-desc="โอนเงิน"]').click()
+#         print("เข้าหน้าโอนเงิน")
+#         break
+#     except:
+#         pass
+# time.sleep(2)
+
+# d.click(156,1115)
+
+
+
+# bank = "ไทยพาณิชย์"
+
+
+# d.click(156,702)
+# d.click(156,702)
+# d.send_keys(f"{bank}")
+# time.sleep(2)
+# d.click(150,1024)
+# time.sleep(2)
+# d.click(112,1273)
+# d.send_keys("4096530952")
+
+# time.sleep(2)
+
+# d.click(126,1032)
+# time.sleep(2)
+# d.send_keys("1.11")
+
+# d.swipe(461, 1322,461, 524, 0.5)
+
+# d(text="ต่อไป").click()
+
+# time.sleep(2)
+# d.swipe(461, 1322,461, 524, 0.5)
+# d.swipe(461, 1322,461, 524, 0.5)
+
+
+# d.click(521,1458)
+
+# while True:
+#     try:
+#         d.xpath('//*[@content-desc="ยืนยัน"]').click()
+#         print("ยืนยันสำเร็จ")
+#         break
+#     except:
+#         pass
+
+
+# while True:
+#     try:
+#         d(text="โอนเงินสำเร็จ").get_text(timeout=0.1)
+#         print("โอนเงินสำเร็จ")
+#     except:
+#         pass
+
+# d.app_stop("com.kasikornbank.kbiz")
+
+
+
+
+
+def transfer_money(bank_name, account_number, amount):
+    d.app_start("com.kasikornbank.kbiz")
+    while True:
+        
+        if d.xpath('//*[@content-desc="ใช่"]').exists:
+            d.xpath('//*[@content-desc="ใช่"]').click()
+            
+        elif d.xpath('//*[@content-desc="เข้าสู่ระบบ"]').exists:
+            d.xpath('//*[@content-desc="เข้าสู่ระบบ"]').click()
+
+        elif d.xpath('//*[@content-desc="ใส่รหัส PIN"]').exists:
+            print("ใส่รหัส PIN")
+            break
+
+    while True:
+        if d.xpath('//*[@content-desc="1"]').exists:
+            for digit in "230419":
+                d.xpath(f'//*[@content-desc="{digit}"]').click()
+                time.sleep(0.2)
+
+            break
+    time.sleep(2)
+
+    # if d.xpath('//*[@content-desc="ปิด"]').exists:
+    #         d.xpath('//*[@content-desc="ปิด"]').click()
+    #         print("ปิด")
+    #         while True:
+    #             if d.xpath('//*[@content-desc="ใช่"]').exists:
+    #                 d.xpath('//*[@content-desc="ใช่"]').click()
+                    
+    #             elif d.xpath('//*[@content-desc="เข้าสู่ระบบ"]').exists:
+    #                 d.xpath('//*[@content-desc="เข้าสู่ระบบ"]').click()
+
+    #             elif d.xpath('//*[@content-desc="ใส่รหัส PIN"]').exists:
+    #                 print("ใส่รหัส PIN")
+    #                 break
+
+
+
+    while True:
+        try:
+            d.xpath('//*[starts-with(@content-desc,"ธุรกรรม")]').click()
+            time.sleep(0.1)
+        except:
+            pass
+
+        try:
+            d.xpath('//*[@content-desc="โอนเงิน"]').click()
+            print("โอนเงิน")
+            break
+        except:
+            pass
+
+
+
+    while True:
+        try:
+            d.xpath('//*[@content-desc="โอนเงิน"]').click()
+            print("เข้าหน้าโอนเงิน")
+            break
+        except:
+            pass
+    time.sleep(2)
+
+    d.click(156,1115)
+
+    d.click(156,702)
+    d.click(156,702)
+    d.send_keys(f"{bank_name}")
+    time.sleep(2)
+    d.click(150,1024)
+    time.sleep(2)
+    d.click(112,1273)
+    d.send_keys(account_number)
+
+    time.sleep(2)
+
+    d.click(126,1032)
+    time.sleep(2)
+    d.send_keys(str(amount))
+
+    d.swipe(461, 1322,461, 524, 0.5)
+
+    d(text="ต่อไป").click()
+
+    time.sleep(2)
+    d.swipe(461, 1322,461, 524, 0.5)
+    d.swipe(461, 1322,461, 524, 0.5)
+    time.sleep(1)
+    d.click(521,1458)
+
+    time.sleep(2)
+    while True:
+        try:
+            d.xpath('//*[@content-desc="ยืนยัน"]').click()
+            print("ยืนยันสำเร็จ")
+            break
+        except:
+            pass
+
+    while True:
+        try:
+            d(text="โอนเงินสำเร็จ").get_text(timeout=0.1)
+            print("โอนเงินสำเร็จ")
+            break
+        except:
+            pass
+
+# รายการบัญชีที่ต้องการโอน
+accounts = [
+    {"bank": "ไทยพาณิชย์", "account": "4096530952", "amount": 0.01},
+    {"bank": "กสิกรไทย", "account": "1941694183", "amount": 0.02}, 
+    {"bank": "กรุงศรี", "account": "0421751829", "amount": 0.03}
+]
+
+# วนลูปโอนเงินทุกบัญชี
+for acc in accounts:
+    transfer_money(acc["bank"], acc["account"], acc["amount"])
+    
+    d.app_stop("com.kasikornbank.kbiz")
+    time.sleep(3) # รอระหว่างการโอนแต่ละรายการ
+

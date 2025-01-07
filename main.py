@@ -56,14 +56,12 @@ def close_all_apps(d):
 def get_ui_elements_info(device):
     # Dump the UI hierarchy (XML format)
     ui_hierarchy = device.dump_hierarchy()
-
     # Convert the XML hierarchy to a Python dictionary using xmltodict
     ui_dict = xmltodict.parse(ui_hierarchy)
-
     # Convert the dictionary to JSON (you can also keep it as dict if you don't need JSON specifically)
     # ui_json = json.dumps(ui_dict, indent=4, ensure_ascii=False)
-
     return ui_dict  # Return JSON formatted UI data
+
 
 
 @app.route("/infoapp", methods=["GET", "POST"])
@@ -89,7 +87,6 @@ def infoapp():
         return {"status": False, "msg": f"Failed to get UI elements info: {str(e)}"}
 
     return {"status": True, "msg": data}
-
 # package = "com.kasikorn.retail.mbanking.wap"
 # name_adb = "WWTWDQ4XX48XIBTO"
 # url = ""
@@ -169,9 +166,11 @@ def verifyphone():
     adb = uiautomator2.connect(device)
     adb.app_start(package)
     while True:
+        
         if time.time() - start_time >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
+        
         try:
             footer_bank_textview = adb(text="ธุรกรรม").get_text(timeout=0.1)
             print(footer_bank_textview)
@@ -179,6 +178,7 @@ def verifyphone():
             return  {"status":True,"msg":'อัพเดทสำเร็จ'}
         except:
             pass
+
         try:
             complete_back_button = adb(text="อัปเดตเบอร์มือถือ").get_text(timeout=0.1)
             print(complete_back_button)
