@@ -229,12 +229,19 @@ def index():
                 return {"status":False,"msg":"check token"}
             except:
                 pass
+
+            try:
+                adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next"]').click()
+            except:
+                pass
+
             try:
                 check_pin = adb(text="กรุณาใส่รหัสผ่าน").get_text(timeout=0.1)
                 print(check_pin)
                 break
             except:
                 pass
+
         time.sleep(1)
         for p in pin:
                     adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()

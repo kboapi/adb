@@ -6,6 +6,11 @@ import xmltodict
 d = u2.connect()
 
 
+
+
+d.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next"]').click()
+
+
 # d.app_start("com.kasikornbank.kbiz")
 # while True:
     
