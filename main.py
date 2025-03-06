@@ -299,10 +299,10 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
 
 
     # Step 3: Wait and click other bank account button
-    step3_start = time.time()
+    
     while True:
 
-        if time.time() - step3_start >= time_out:
+        if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         
@@ -344,9 +344,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             pass
 
     # Step 4: Wait for search box and enter bank name
-    step4_start = time.time()
+    
     while True:
-        if time.time() - step4_start >= time_out:
+        if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         try:
@@ -355,10 +355,10 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         except:
             pass
 
-    # Step 5: Wait and click bank option
-    step5_start = time.time()
+    
+    
     while True:
-        if time.time() - step5_start >= time_out:
+        if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         try:
@@ -368,9 +368,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             pass
 
     # Step 6: Wait for account number input field and enter text
-    step6_start = time.time()
+    
     while True:
-        if time.time() - step6_start >= time_out:
+        if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         try:
@@ -383,9 +383,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             pass
 
     # Step 7: Wait for amount input field and enter text
-    step7_start = time.time()
+    
     while True:
-        if time.time() - step7_start >= time_out:
+        if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         try:
@@ -397,9 +397,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         except:
             pass
     # Step 8: Click next button
-    step8_start = time.time()
+    
     while True:
-        if time.time() - step8_start >= time_out:
+        if time.time() - step1_start >= time_out:
             print("Timeout reached for Step 8")
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
@@ -417,9 +417,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             time.sleep(1)  # Add delay on exception
 
     # Step 9: Click next button again to confirm
-    step9_start = time.time()
+    
     while True:
-        if time.time() - step9_start >= time_out:
+        if time.time() - step1_start >= time_out:
             print("Timeout reached for Step 9")
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
@@ -444,9 +444,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             time.sleep(1)  # Add delay on exception
 
     # Check for successful transfer message
-    step10_start = time.time()
+    
     while True:
-        if time.time() - step10_start >= time_out:
+        if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         try:
