@@ -8,6 +8,9 @@ from threading import Thread
 import xmltodict
 import subprocess
 import json
+
+
+
 app = Flask(__name__)
 data_adb = []
 def loop_check_adb():
@@ -33,6 +36,479 @@ def close_unwanted_apps(d,excluded_apps=None):
     d.app_stop('com.android.chrome')
     # d.app_clear('com.gawk.smsforwarder')
     d.press('home')
+
+
+
+def filter_bank_shortCode(shortCode):
+    """
+    Function to filter bank name and return bank code
+    
+    Args:
+        bank_name: Name of the bank in Thai or English, or bank code
+        
+    Returns:
+        Bank code if found, None otherwise
+    """
+    # Define bank mapping
+    bank_mapping = [
+        {
+            'bankCode': '030',
+            'shortCode': 'GSB',
+            'bankNameEn': 'Government Savings Bank',
+            'bankNameTh': 'ออมสิน',
+        },
+        {
+            'bankCode': '002',
+            'shortCode': 'BBL',
+            'bankNameEn': 'Bangkok Bank',
+            'bankNameTh': 'กรุงเทพ',
+        },
+        {
+            'bankCode': '004',
+            'shortCode': 'KBANK',
+            'bankNameEn': 'Kasikorn Bank',
+            'bankNameTh': 'กสิกรไทย',
+        },
+        {
+            'bankCode': '006',
+            'shortCode': 'KTB',
+            'bankNameEn': 'Krung Thai Bank',
+            'bankNameTh': 'กรุงไทย',
+        },
+        {
+            'bankCode': '011',
+            'shortCode': 'TTB',
+            'bankNameEn': 'TMBThanachart Bank',
+            'bankNameTh': 'ทหารไทยธนชาต',
+        },
+        {
+            'bankCode': '014',
+            'shortCode': 'SCB',
+            'bankNameEn': 'Siam Commercial Bank',
+            'bankNameTh': 'ไทยพาณิชย์',
+        },
+        {
+            'bankCode': '020',
+            'shortCode': 'SCBT',
+            'bankNameEn': 'Standard Chartered Bank (Thai)',
+            'bankNameTh': 'แสตนดาร์ดชาร์เตอร์ (ไทย)',
+        },
+        {
+            'bankCode': '022',
+            'shortCode': 'CIMB',
+            'bankNameEn': 'CIMB Thai Bank',
+            'bankNameTh': 'ซีไอเอ็มบีไทย',
+        },
+        {
+            'bankCode': '024',
+            'shortCode': 'UOB',
+            'bankNameEn': 'United Overseas Bank (Thai)',
+            'bankNameTh': 'ยูโอบี',
+        },
+        {
+            'bankCode': '025',
+            'shortCode': 'BAY',
+            'bankNameEn': 'Bank of Ayudhya',
+            'bankNameTh': 'กรุงศรีอยุธยา',
+        },
+        {
+            'bankCode': '073',
+            'shortCode': 'LHB',
+            'bankNameEn': 'Land and Houses Bank',
+            'bankNameTh': 'แลนด์แอนด์เฮาส์',
+        },
+        {
+            'bankCode': '069',
+            'shortCode': 'KKP',
+            'bankNameEn': 'Kiatnakin Phatra Bank',
+            'bankNameTh': 'เกียรตินาคินภัทร',
+        },
+        {
+            'bankCode': '017',
+            'shortCode': 'CITI',
+            'bankNameEn': 'Citibank',
+            'bankNameTh': 'ซิตี้แบงก์',
+        },
+        {
+            'bankCode': '067',
+            'shortCode': 'TISCO',
+            'bankNameEn': 'Tisco Bank',
+            'bankNameTh': 'ทิสโก้',
+        },
+        {
+            'bankCode': '034',
+            'shortCode': 'BAAC',
+            'bankNameEn': 'BAAC',
+            'bankNameTh': 'เพื่อการเกษตรและสหกรณ์การเกษตร',
+        },
+        {
+            'bankCode': '066',
+            'shortCode': 'ISBT',
+            'bankNameEn': 'Islamic Bank of Thailand',
+            'bankNameTh': 'อิสลามแห่งประเทศไทย',
+        },
+        {
+            'bankCode': '018',
+            'shortCode': 'SMBC',
+            'bankNameEn': 'Sumitomo Mitsui Banking Corporation (SMBC)',
+            'bankNameTh': 'ซูมิโตโม มิตซุย แบงกิ้ง คอร์ปอเรชั่น',
+        },
+        {
+            'bankCode': '031',
+            'shortCode': 'HSBC',
+            'bankNameEn': 'Hong Kong & Shanghai Corporation Limited (HSBC)',
+            'bankNameTh': 'ฮ่องกงและเซี่ยงไฮ้ จำกัด',
+        },
+        {
+            'bankCode': '033',
+            'shortCode': 'GHB',
+            'bankNameEn': 'Government Housing Bank (GHB)',
+            'bankNameTh': 'อาคารสงเคราะห์',
+        },
+        {
+            'bankCode': '039',
+            'shortCode': 'MHCB',
+            'bankNameEn': 'Mizuho Corporate Bank Limited (MHCB)',
+            'bankNameTh': 'มิซูโฮ คอร์เปอเรท สาขากรุงเทพฯ',
+        },
+        {
+            'bankCode': '070',
+            'shortCode': 'ICBC',
+            'bankNameEn': 'Industrial and Commercial Bank of China (thai) Public Company Limited',
+            'bankNameTh': 'ไอซีบีซี (ไทย) จำกัด (มหาชน)',
+        },
+        {
+            'bankCode': '071',
+            'shortCode': 'TCRB',
+            'bankNameEn': 'The Thai Credit Retail Bank Public Company Limited (TCRB)',
+            'bankNameTh': 'ไทยเครดิตเพื่อรายย่อย จำกัด (มหาชน)',
+        },
+        {
+            'bankCode': '032',
+            'shortCode': 'DBAG',
+            'bankNameEn': 'DEUTSCHE BANK AG',
+            'bankNameTh': 'ดอยซ์แบงก์ เอจี',
+        },
+        {
+            'bankCode': '052',
+            'shortCode': 'BOC',
+            'bankNameEn': 'Bank of China (Thai) Public Company Limited (BOC)',
+            'bankNameTh': 'แห่งประเทศจีน (ไทย) จำกัด (มหาชน)',
+        },
+        {
+            'bankCode': '079',
+            'shortCode': 'ANZ',
+            'bankNameEn': 'ANZ Bank (Thai) Public Company Limited',
+            'bankNameTh': 'เอเอ็นแซด (ไทย) จำกัด (มหาชน)',
+        },
+        {
+            'bankCode': '029',
+            'shortCode': 'IOBA',
+            'bankNameEn': 'INDIAN OVERSEAS BANK',
+            'bankNameTh': 'อินเดียนโอเวอร์ซีร์',
+        },
+        {
+            'bankCode': '045',
+            'shortCode': 'BNP',
+            'bankNameEn': 'BNP Paribas Bank',
+            'bankNameTh': 'บีเอ็นพี พารีบาส์',
+        }
+    ]
+    
+    # Check if bank_name is already a bank code
+    for bank in bank_mapping:
+        if shortCode == bank['shortCode']:
+            return bank['bankNameTh']
+    
+    # Check if bank_name matches any Thai or English name or short code
+    for bank in bank_mapping:
+        if (shortCode.lower() in bank['bankNameTh'].lower() or 
+            shortCode.lower() in bank['bankNameEn'].lower() or 
+            shortCode.upper() == bank['shortCode']):
+            return bank['bankNameTh']
+    
+    # If no match found
+    return None
+
+def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_name=None, time_out=60):
+
+    package = "com.kasikorn.retail.mbanking.wap"
+
+    """
+    Function to transfer money to another bank account using K+ mobile banking app
+    
+    Args:
+        device: Device ID to connect to. If None, connects to default device
+        pin: PIN for K+ app authentication
+        acc_number: Recipient account number
+        amount: Amount to transfer
+        bank_name: Name of recipient's bank
+        time_out: Maximum time to wait for each step
+        
+    Returns:
+        Reference number if transfer successful, None otherwise
+    """
+    # Connect to the specified device if provided
+
+    adb = uiautomator2.connect(device)
+    # Make sure the app is running
+    if adb.info['currentPackageName'] != package:
+        adb.app_start(package)
+
+    if bank_name:
+        bank_name_th = filter_bank_shortCode(bank_name)
+        if bank_name_th:
+            bank_name = bank_name_th
+        
+    
+    # Step 1: Wait and click quick banking menu
+    step1_start = time.time()
+    while True:
+        if time.time() - step1_start >= time_out:
+            print("Timeout reached for Step 1")
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        
+        print("Step 1")
+
+
+        try:
+            textview_message_dialog = adb(resourceId="com.kasikorn.retail.mbanking.wap:id/textview_message_dialog").get_text(timeout=0.5)
+            print("textview_message_dialog:", textview_message_dialog)
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_confirm").click(timeout=0.5)
+        except:
+            pass
+
+        try:
+            transfer_text = adb(text="โอนเงิน").get_text(timeout=0.5)
+            print("transfer_text:", transfer_text)
+            adb(text="โอนเงิน").click(timeout=0.5)
+            break
+        except:
+            pass
+
+        
+        try:
+            layout_quickBankingMenuCircle = adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").get_text(timeout=0.5)
+            print("layout_quickBankingMenuCircle:", layout_quickBankingMenuCircle)
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").click(timeout=0.5)
+            break
+        except:
+            pass
+
+
+    # Step 3: Wait and click other bank account button
+    step3_start = time.time()
+    while True:
+        if time.time() - step3_start >= time_out:
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        try:
+            pin_get = adb(text="กรุณาใส่รหัสผ่าน").get_text(0.5)
+            print("pin_get:", pin_get)
+            print("Entering PIN")
+            for p in pin:
+                time.sleep(0.1)
+                print(f"Entering PIN: {p}")
+                adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
+                time.sleep(0.1)
+        except:
+            pass
+
+        try:
+            bank_other = adb(text="บัญชีธนาคารอื่น").get_text(timeout=0.5)
+            print("bank_other:", bank_other)
+            adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
+        except:
+            pass
+
+        try:
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/search_edit_text").click(timeout=1)
+            break
+        except:
+            pass
+
+    # Step 4: Wait for search box and enter bank name
+    step4_start = time.time()
+    while True:
+        if time.time() - step4_start >= time_out:
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        try:
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/search_edit_text").set_text(bank_name)
+            break
+        except:
+            pass
+
+    # Step 5: Wait and click bank option
+    step5_start = time.time()
+    while True:
+        if time.time() - step5_start >= time_out:
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        try:
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/merchant_name", text=bank_name).click()
+            break
+        except:
+            pass
+
+    # Step 6: Wait for account number input field and enter text
+    step6_start = time.time()
+    while True:
+        if time.time() - step6_start >= time_out:
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        try:
+            if adb(text="กรอกเลขบัญชี").exists:
+                adb(text="กรอกเลขบัญชี").set_text(acc_number)
+                time.sleep(1)
+                adb(description="ตกลง ").click()
+                break
+        except:
+            pass
+
+    # Step 7: Wait for amount input field and enter text
+    step7_start = time.time()
+    while True:
+        if time.time() - step7_start >= time_out:
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        try:
+            if adb(text="กรอกจำนวนเงิน").exists:
+                adb(text="กรอกจำนวนเงิน").set_text(amount)
+                time.sleep(1)
+                adb(description="ตกลง ").click()
+                break
+        except:
+            pass
+    # Step 8: Click next button
+    step8_start = time.time()
+    while True:
+        if time.time() - step8_start >= time_out:
+            print("Timeout reached for Step 8")
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        
+        try:
+            # Add a small delay to prevent excessive CPU usage
+            time.sleep(0.5)
+            
+            if adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next").exists:
+                adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next").click()
+                time.sleep(1)  # Give time for the app to respond
+                break
+        except Exception as e:
+            print(f"Error in Step 8: {e}")
+            time.sleep(1)  # Add delay on exception
+
+    # Step 9: Click next button again to confirm
+    step9_start = time.time()
+    while True:
+        if time.time() - step9_start >= time_out:
+            print("Timeout reached for Step 9")
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        
+        try:
+            # First try to click confirm button if it exists
+            if adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_confirm").exists:
+                adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_confirm").click()
+                time.sleep(1)  # Give time for the app to respond
+        except Exception as e:
+            print(f"Error with confirm button: {e}")
+            time.sleep(0.5)
+
+        try:
+            # Then try to click next button
+            if adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next").exists:
+                adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next").click()
+                time.sleep(1)  # Give time for the app to respond
+                break
+        except Exception as e:
+            print(f"Error with next button: {e}")
+            time.sleep(1)  # Add delay on exception
+
+    # Check for successful transfer message
+    step10_start = time.time()
+    while True:
+        if time.time() - step10_start >= time_out:
+            adb.app_stop(package)
+            return {"status":False,"msg":"time_out"}
+        try:
+            if adb(text="โอนเงินสำเร็จ").exists:
+                ref = adb(resourceId="com.kasikorn.retail.mbanking.wap:id/textView_finance_number").get_text()
+                print("ref:", ref)
+                print("โอนเงินสำเร็จ")
+                adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageView_bottom_menu_home").click()
+
+                data_json = {
+                    "from":"",
+                    "to":acc_number,
+                    "amount":amount,
+                    "fee":"0.00",
+                    "number":ref,
+                }
+                return {"status":True,"msg":data_json}
+        except:
+            pass
+    
+
+
+def transfer_money_loop(transfer_list=None, device=None, pin="000009", time_out=60):
+    """
+    Function to transfer money to multiple bank accounts using K+ mobile banking app
+    
+    Args:
+        transfer_list: List of dictionaries containing transfer details
+                      [{"acc_number": "1234567890", "amount": "10", "bank_name": "กรุงไทย"}, ...]
+        device: Device ID to connect to. If None, connects to default device
+        pin: PIN for K+ app authentication
+        time_out: Maximum time to wait for each step
+        
+    Returns:
+        Dictionary with account numbers as keys and reference numbers as values
+        If transfer fails, the value will be None
+    """
+    if transfer_list is None or len(transfer_list) == 0:
+        print("No transfers specified")
+        return {}
+    
+    results = {}
+    
+    for transfer in transfer_list:
+        acc_number = transfer.get("acc_number")
+        amount = transfer.get("amount")
+        bank_name = transfer.get("bank_name")
+        if bank_name:
+            bank_name_th = filter_bank_shortCode(bank_name)
+            if bank_name_th:
+                bank_name = bank_name_th
+        
+        if not all([acc_number, amount, bank_name]):
+            print(f"Skipping incomplete transfer: {transfer}")
+            continue
+            
+        print(f"Transferring {amount} to {acc_number} ({bank_name})")
+        ref = transfer_money(
+            device=device,
+            pin=pin,
+            acc_number=acc_number,
+            amount=amount,
+            bank_name=bank_name,
+            time_out=time_out
+        )
+        
+        results[acc_number] = ref
+        
+        if ref:
+            print(f"Transfer to {acc_number} successful, reference: {ref}")
+        else:
+            print(f"Transfer to {acc_number} failed")
+        
+    
+    return results
+
+
 
 
 def close_all_apps(d):
@@ -189,6 +665,30 @@ def verifyphone():
     adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/complete_back_button").click()
     adb.app_stop(package)
     return  {"status":True,"msg":'อัพเดทสำเร็จ'}
+
+@app.route("/transfer",methods=["GET", "POST"])
+def transfer():
+    if request.method == "POST":
+        data = request.json
+    else:
+        data = request.args
+    device = data.get("device")
+    pin = data.get("pin")
+    acc_to = data.get("acc_to")
+    amount = data.get("amount")
+    bank_name = data.get("bankcode")
+
+
+    if not device:
+        devices = get_devices_all()
+        device = devices[0]
+
+
+    return transfer_money(device=device, pin=pin, acc_number=acc_to, amount=amount, bank_name=bank_name)
+
+    
+
+
 
 @app.route("/",methods=["GET", "POST"])
 def index():

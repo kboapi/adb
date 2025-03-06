@@ -1,9 +1,16 @@
 import uiautomator2 as u2
 import subprocess
 import time
+from uiautomator2 import Direction
+adb = u2.connect()
 
-d = u2.connect()
+print(adb.info)
+if adb.info['currentPackageName'] == "com.android.systemui":
+    adb.screen_on()
+    adb.swipe_ext(Direction.FORWARD)
 
+time.sleep(2)
+adb.screen_off()
 
 # def transfer_money(pin,bank_name, account_number, amount):
 #     d.app_start("com.kasikornbank.kbiz")
@@ -103,26 +110,26 @@ d = u2.connect()
 
 
 
-account_number = "1941694183"
+# account_number = "1941694183"
 
-bank_name = "ไทยพาณิชย์"
+# bank_name = "ไทยพาณิชย์"
 
-amount = "0.05"
+# amount = "0.05"
 
-Spinners = d.xpath('//android.widget.Spinner').all()
-Spinners[1].click()
-time.sleep(2)
-elements = d.xpath('//android.widget.EditText').all()
-# #พิมพ์ธนาคาร
-elements[2].click()
-d.send_keys(bank_name)
-d.click(150,1024)
+# Spinners = d.xpath('//android.widget.Spinner').all()
+# Spinners[1].click()
+# time.sleep(2)
+# elements = d.xpath('//android.widget.EditText').all()
+# # #พิมพ์ธนาคาร
+# elements[2].click()
+# d.send_keys(bank_name)
+# d.click(150,1024)
 
-time.sleep(1)
-elements[0].click()
-d.send_keys(account_number)
+# time.sleep(1)
+# elements[0].click()
+# d.send_keys(account_number)
 
-time.sleep(1)
-elements[1].click()
-d.send_keys(amount)
+# time.sleep(1)
+# elements[1].click()
+# d.send_keys(amount)
 
