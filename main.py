@@ -347,19 +347,20 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             return {"status":False,"msg":"time_out"}
         
         print("Step 4")
+
+        try:
+            adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').click()
+            adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').set_text(bank_name)
+            break
+        except:
+            pass
         
         try:
             adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
         except:
             pass
 
-        try:
-            time.sleep(1)
-            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/search_edit_text").click(timeout=0.5)
-            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/search_edit_text").set_text(bank_name)
-            break
-        except:
-            pass
+        
 
     
     

@@ -8,7 +8,9 @@ d = u2.connect()
 
 
 
-d.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/imageview_navigation_next"]').click()
+d.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').click()
+
+d.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').set_text("กสิกรไทย")
 
 
 # d.app_start("com.kasikornbank.kbiz")
