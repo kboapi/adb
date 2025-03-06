@@ -3,7 +3,6 @@ import subprocess
 import time
 from uiautomator2 import Direction
 
-
 adb = u2.connect()
 print(adb.info)
 if adb.info['currentPackageName'] == "com.android.systemui":
@@ -247,6 +246,21 @@ def transfer_money(device=None, pin="000009", acc_number="0000000000", amount="1
 
 
         try:
+            transfer_text = adb(text="โอนเงิน").get_text(timeout=0.5)
+            print("transfer_text:", transfer_text)
+            adb(text="โอนเงิน").click(timeout=0.5)
+            break
+        except:
+            pass
+
+        try:
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").click(timeout=0.5)
+            break
+        except:
+            pass
+
+
+        try:
             textview_message_dialog = adb(resourceId="com.kasikorn.retail.mbanking.wap:id/textview_message_dialog").get_text(timeout=0.5)
             print("textview_message_dialog:", textview_message_dialog)
             adb(resourceId="com.kasikorn.retail.mbanking.wap:id/imageview_confirm").click(timeout=0.5)
@@ -269,7 +283,7 @@ def transfer_money(device=None, pin="000009", acc_number="0000000000", amount="1
         except:
             pass
 
-        time.sleep(0.1)
+
 
       
        
