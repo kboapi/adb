@@ -39,7 +39,7 @@ def close_unwanted_apps(d,excluded_apps=None):
 
 
 
-def filter_bank_shortCode(shortCode):
+def filter_bank_shortCode(bankCode):
     """
     Function to filter bank name and return bank code
     
@@ -217,14 +217,14 @@ def filter_bank_shortCode(shortCode):
     
     # Check if bank_name is already a bank code
     for bank in bank_mapping:
-        if shortCode == bank['shortCode']:
+        if bankCode == bank['bankCode']:
             return bank['bankNameTh']
     
     # Check if bank_name matches any Thai or English name or short code
     for bank in bank_mapping:
-        if (shortCode.lower() in bank['bankNameTh'].lower() or 
-            shortCode.lower() in bank['bankNameEn'].lower() or 
-            shortCode.upper() == bank['shortCode']):
+        if (bankCode.lower() in bank['bankNameTh'].lower() or 
+            bankCode.lower() in bank['bankNameEn'].lower() or 
+            bankCode.upper() == bank['shortCode']):
             return bank['bankNameTh']
     
     # If no match found
