@@ -282,7 +282,6 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         try:
             transfer_text = adb(text="โอนเงิน").get_text(timeout=0.5)
             print("transfer_text:", transfer_text)
-            adb(text="โอนเงิน").click(timeout=0.5)
             break
         except:
             pass
@@ -295,16 +294,26 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             break
         except:
             pass
-
-
+        
         time.sleep(0.5)
+
 
     # Step 3: Wait and click other bank account button
     step3_start = time.time()
     while True:
+
         if time.time() - step3_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
+        
+        print("Step 3")
+
+        try:
+            adb(text="โอนเงิน").click(timeout=0.1)
+            break
+        except:
+            pass
+        
         try:
             pin_get = adb(text="กรุณาใส่รหัสผ่าน").get_text(0.5)
             print("pin_get:", pin_get)
