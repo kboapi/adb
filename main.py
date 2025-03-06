@@ -334,14 +334,11 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             bank_other = adb(text="บัญชีธนาคารอื่น").get_text(timeout=0.5)
             print("bank_other:", bank_other)
             adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
-        except:
-            pass
-
-        try:
-            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/search_edit_text").click(timeout=1)
             break
         except:
             pass
+
+    
 
     # Step 4: Wait for search box and enter bank name
     
