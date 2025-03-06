@@ -309,8 +309,12 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         print("Step 3")
 
         try:
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").click(timeout=0.1)
+        except:
+            pass
+
+        try:
             adb(text="โอนเงิน").click(timeout=0.1)
-            break
         except:
             pass
         
