@@ -297,6 +297,8 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             pass
 
 
+        time.sleep(0.5)
+
     # Step 3: Wait and click other bank account button
     step3_start = time.time()
     while True:
