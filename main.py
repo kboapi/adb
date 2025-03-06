@@ -333,7 +333,6 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         try:
             bank_other = adb(text="บัญชีธนาคารอื่น").get_text(timeout=0.5)
             print("bank_other:", bank_other)
-            adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
             break
         except:
             pass
@@ -346,6 +345,12 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         if time.time() - step1_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
+        
+        try:
+            adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
+        except:
+            pass
+        
         try:
             adb(resourceId="com.kasikorn.retail.mbanking.wap:id/search_edit_text").set_text(bank_name)
             break
