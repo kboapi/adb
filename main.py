@@ -427,6 +427,10 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
     # Connect to the specified device if provided
 
     adb = uiautomator2.connect(device)
+
+    if adb.info['currentPackageName'] == "com.android.systemui":
+        adb.screen_on()
+        adb.swipe_ext(Direction.FORWARD)
     # Make sure the app is running
     if adb.info['currentPackageName'] != package:
         adb.app_start(package)
