@@ -220,14 +220,6 @@ def filter_bank_shortCode(bankCode):
         if bankCode == bank['bankCode']:
             return bank['bankNameTh']
     
-    # Check if bank_name matches any Thai or English name or short code
-    for bank in bank_mapping:
-        if (bankCode.lower() in bank['bankNameTh'].lower() or 
-            bankCode.lower() in bank['bankNameEn'].lower() or 
-            bankCode.upper() == bank['shortCode']):
-            return bank['bankNameTh']
-    
-    # If no match found
     return None
 
 def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_name=None, time_out=60):
