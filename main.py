@@ -432,8 +432,7 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         adb.app_start(package)
 
     bank_name_en = filter_bank_shortCode(bank_name)
-
-        
+    bank_name_th = filter_bank_bankNameTh(bank_name)
     
     # Step 1: Wait and click quick banking menu
     step1_start = time.time()
@@ -523,15 +522,16 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         print("Step 4")
 
         try:
+            time.sleep(2)
             print("bank_name:", bank_name_en)
+            adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').click()
+            time.sleep(1)
             # Using set_text instead of send_keys as the error shows send_keys is not a valid attribute
             element = adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]')
             element.set_text(bank_name_en)
             break
         except:
             pass
-        
-
         
 
     
@@ -543,7 +543,7 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         
         print("Step 5")
         try:
-            bank_name_th = filter_bank_bankNameTh(bank_name)
+            
             adb(resourceId="com.kasikorn.retail.mbanking.wap:id/merchant_name", text=bank_name_th).click()
             break
         except:
