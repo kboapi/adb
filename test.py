@@ -3,16 +3,11 @@ import subprocess
 import time
 import xmltodict
 #Connect to the device
-d = u2.connect()
+adb = u2.connect()
 
 
-
-
-adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').click()
-# Using set_text instead of send_keys as the error shows send_keys is not a valid attribute
 element = adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]')
 element.set_text("กสิกรไทย")
-
 
 # d.app_start("com.kasikornbank.kbiz")
 # while True:
