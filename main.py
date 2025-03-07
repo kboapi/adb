@@ -523,10 +523,10 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         print("Step 4")
 
         try:
-            print("bank_name_th:", bank_name_th)
+            print("bank_name:", bank_name_en)
             # Using set_text instead of send_keys as the error shows send_keys is not a valid attribute
             element = adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]')
-            element.set_text(bank_name_th)
+            element.set_text(bank_name_en)
             break
         except:
             pass
