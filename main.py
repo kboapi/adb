@@ -255,10 +255,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
     if adb.info['currentPackageName'] != package:
         adb.app_start(package)
 
-    if bank_name:
-        bank_name_th = filter_bank_shortCode(bank_name)
-        if bank_name_th:
-            bank_name = bank_name_th
+    bank_name_th = filter_bank_shortCode(bank_name)
+    if bank_name_th:
+        bank_name = bank_name_th
         
     
     # Step 1: Wait and click quick banking menu
