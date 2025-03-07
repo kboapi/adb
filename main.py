@@ -77,7 +77,7 @@ def filter_bank_shortCode(bankCode):
         },
         {
             'bankCode': '011',
-            'shortCode': 'TTB',
+            'shortCode': 'tmb',
             'bankNameEn': 'TMBThanachart Bank',
             'bankNameTh': 'ทหารไทยธนชาต',
         },
@@ -107,13 +107,13 @@ def filter_bank_shortCode(bankCode):
         },
         {
             'bankCode': '025',
-            'shortCode': 'BAY',
+            'shortCode': 'krungsri',
             'bankNameEn': 'Bank of Ayudhya',
             'bankNameTh': 'กรุงศรีอยุธยา',
         },
         {
             'bankCode': '073',
-            'shortCode': 'LHB',
+            'shortCode': 'lh',
             'bankNameEn': 'Land and Houses Bank',
             'bankNameTh': 'แลนด์แอนด์เฮาส์',
         },
@@ -143,15 +143,15 @@ def filter_bank_shortCode(bankCode):
         },
         {
             'bankCode': '066',
-            'shortCode': 'ISBT',
+            'shortCode': 'isl',
             'bankNameEn': 'Islamic Bank of Thailand',
-            'bankNameTh': 'อิสลามแห่งประเทศไทย',
+            'bankNameTh': 'ธ.อิสลาม',
         },
         {
             'bankCode': '018',
             'shortCode': 'SMBC',
             'bankNameEn': 'Sumitomo Mitsui Banking Corporation (SMBC)',
-            'bankNameTh': 'ซูมิโตโม มิตซุย แบงกิ้ง คอร์ปอเรชั่น',
+            'bankNameTh': 'ซูมิโตโม มิตซุย',
         },
         {
             'bankCode': '031',
@@ -523,12 +523,12 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
 
         try:
             time.sleep(2)
-            print("bank_name:", bank_name_th)
+            print("bank_name:", bank_name_en)
             adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]').click()
             time.sleep(1)
             # Using set_text instead of send_keys as the error shows send_keys is not a valid attribute
             element = adb.xpath('//*[@resource-id="com.kasikorn.retail.mbanking.wap:id/search_edit_text"]')
-            element.set_text(bank_name_th)
+            element.set_text(bank_name_en)
             break
         except:
             pass
