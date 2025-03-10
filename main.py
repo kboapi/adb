@@ -477,9 +477,9 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
 
     # Step 3: Wait and click other bank account button
     
+    step3_start = time.time()
     while True:
-
-        if time.time() - step1_start >= time_out:
+        if time.time() - step3_start >= time_out:
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         
@@ -488,26 +488,25 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         if adb(text="กรุณาใส่รหัสผ่าน").exists:
             print("กรุณาใส่รหัสผ่าน")
             for p in pin:
-                adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
-                time.sleep(0.5)
-                
+                adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click(timeout=0.5)
+        
         try:
-            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").click(timeout=0.1)
+            adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").click(timeout=0.5)
         except:
             pass
 
         try:
-            adb(text="โอนเงิน").click(timeout=0.1)
+            adb(text="โอนเงิน").click(timeout=0.5)
         except:
             pass
 
         try:
-            # bank_other = adb(text="บัญชีธนาคารอื่น").get_text(timeout=0.5)
-            # print("bank_other:", bank_other)
             adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
             break
         except:
             pass
+        
+        time.sleep(0.5)
 
     
 
