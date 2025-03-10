@@ -500,10 +500,10 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             print("pin_get:", pin_get)
             print("Entering PIN")
             for p in pin:
-                time.sleep(0.1)
+                time.sleep(1)
                 print(f"Entering PIN: {p}")
                 adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
-                time.sleep(0.1)
+                time.sleep(0.5)
         except:
             pass
 
