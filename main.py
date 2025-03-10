@@ -486,21 +486,22 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         print("Step 3")
 
         try:
+            if adb(text="กรุณาใส่รหัสผ่าน").exists:
+                print("กรุณาใส่รหัสผ่าน")
+                for p in pin:
+                    print(f"Entering PIN: {p}")
+                    adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
+                    time.sleep(0.5)
+        except:
+            pass
+
+        try:
             adb(resourceId="com.kasikorn.retail.mbanking.wap:id/layout_quickBankingMenuCircle").click(timeout=0.1)
         except:
             pass
 
         try:
             adb(text="โอนเงิน").click(timeout=0.1)
-        except:
-            pass
-        
-        try:
-            if adb(text="กรุณาใส่รหัสผ่าน").exists:
-                for p in pin:
-                    print(f"Entering PIN: {p}")
-                    adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
-                    time.sleep(0.5)
         except:
             pass
 
