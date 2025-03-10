@@ -514,6 +514,7 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             pass
 
         try:
+            print("บัญชีธนาคารอื่น")
             adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
             break
         except:
@@ -530,6 +531,13 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             adb.app_stop(package)
             return {"status":False,"msg":"time_out"}
         print("Step 4")
+
+        try:
+            print("บัญชีธนาคารอื่น step 4")
+            adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
+            break
+        except:
+            pass
 
         try:
             time.sleep(2)
