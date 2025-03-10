@@ -535,7 +535,6 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         try:
             print("บัญชีธนาคารอื่น step 4")
             adb(text="บัญชีธนาคารอื่น").click(timeout=0.5)
-            break
         except:
             pass
 
@@ -558,7 +557,6 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         
         print("Step 5")
         try:
-            
             adb(resourceId="com.kasikorn.retail.mbanking.wap:id/merchant_name", text=bank_name_th).click()
             break
         except:
