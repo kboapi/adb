@@ -426,6 +426,19 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
     """
     # Connect to the specified device if provided
 
+    # Check if any required parameters are None
+    if pin is None:
+        return {"status": False, "msg": "PIN is required"}
+    
+    if acc_number is None:
+        return {"status": False, "msg": "Account number is required"}
+        
+    if amount is None:
+        return {"status": False, "msg": "Amount is required"}
+        
+    if bank_name is None:
+        return {"status": False, "msg": "Bank name is required"}
+
     adb = uiautomator2.connect(device)
 
     if adb.info['currentPackageName'] == "com.android.systemui":
@@ -487,7 +500,7 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
         
         if adb(text="กรุณาใส่รหัสผ่าน").exists:
             print("กรุณาใส่รหัสผ่าน")
-            for p in pin:
+            for p in str(pin):  # Convert pin to string to ensure it's iterable
                 adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click(timeout=0.5)
         
         try:
