@@ -496,14 +496,11 @@ def transfer_money(device=None, pin=None, acc_number=None, amount=None, bank_nam
             pass
         
         try:
-            pin_get = adb(text="กรุณาใส่รหัสผ่าน").get_text(0.5)
-            print("pin_get:", pin_get)
-            print("Entering PIN")
-            for p in pin:
-                time.sleep(1)
-                print(f"Entering PIN: {p}")
-                adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
-                time.sleep(0.5)
+            if adb(text="กรุณาใส่รหัสผ่าน").exists:
+                for p in pin:
+                    print(f"Entering PIN: {p}")
+                    adb(resourceId=f"com.kasikorn.retail.mbanking.wap:id/linear_layout_button_activity_{p}").click()
+                    time.sleep(0.5)
         except:
             pass
 
